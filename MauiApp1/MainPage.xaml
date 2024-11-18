@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiTileTest.MainPage">
+             x:Class="MauiApp1.MainPage">
 
     <ScrollView>
         <VerticalStackLayout
@@ -14,7 +14,7 @@
                 SemanticProperties.Description="dot net bot in a race car number eight" />
 
             <Label
-                Text="Welcome to Mezzo Tools"
+                Text="Hello, World!"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
@@ -25,10 +25,17 @@
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
             <Button
-                x:Name="Go To Tile Tester"
+                x:Name="CounterBtn"
+                Text="Click me" 
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Fill" />
+            
+            <Button
+                x:Name="navTileTester"
                 Text="Go To Tile Tester" 
-                SemanticProperties.Hint="Redirects the user to the Tile Tester page"
-                Clicked="OnNavigateButtonClicked"
+                SemanticProperties.Hint="Redirects User to Tile Tester Page"
+                Clicked="redirectToTileTester"
                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>

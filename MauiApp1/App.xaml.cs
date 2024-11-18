@@ -1,4 +1,4 @@
-﻿namespace MauiTileTest
+﻿namespace MauiApp1
 {
     public partial class App : Application
     {
