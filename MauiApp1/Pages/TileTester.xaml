@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Pages.TileTester"
              Title="Tile Tester">
     <VerticalStackLayout>
+
         <Label 
+            Style="{StaticResource Headline}"
             Text="Welcome to the Tile Tester"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <Label 
+            Style="{StaticResource SubHeadline}"
+            Text="The following are connections FLORIAN uses for workspaces tiles."
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <VerticalStackLayout>
+            <Label Text="Each connection is given a" Style="{StaticResource SubHeadline}" Margin="0,0,10,10"/>
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60" BackgroundColor="#f94620" Padding="10">
+                    <Image Source="xmark.png" HeightRequest="40" WidthRequest="40" />
+                </Frame>
+                <Label Text=" or " Style="{StaticResource SubHeadline}" Margin="0,7,10,10"/>
+                <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60"  BackgroundColor="#66E44C" Padding="10">
+                    <Image Source="check.png" HeightRequest="40" WidthRequest="40" />
+                </Frame>
+            </HorizontalStackLayout>
+            <Label Text=" based on their current working status." Style="{StaticResource SubHeadline}"/>
+        </VerticalStackLayout>
+
+        <Frame>
+            <controls:StateDisplay Text="Google Satillite Maps"/>
+        </Frame>
+
     </VerticalStackLayout>
+
 </ContentPage>

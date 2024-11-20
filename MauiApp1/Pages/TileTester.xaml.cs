@@ -5,5 +5,9 @@ public partial class TileTester : ContentPage
     public TileTester()
     {
         InitializeComponent();
+
+        // display navbar
+        NavigationPage.SetHasNavigationBar(this, true);
     }
+
 }
