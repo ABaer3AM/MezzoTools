@@ -4,38 +4,75 @@
              xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Pages.TileTester"
              Title="Tile Tester">
-    <VerticalStackLayout>
-
-        <Label 
-            Style="{StaticResource Headline}"
-            Text="Welcome to the Tile Tester"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-
-        <Label 
-            Style="{StaticResource SubHeadline}"
-            Text="The following are connections FLORIAN uses for workspaces tiles."
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-
+    <ScrollView>
         <VerticalStackLayout>
-            <Label Text="Each connection is given a" Style="{StaticResource SubHeadline}" Margin="0,0,10,10"/>
-            <HorizontalStackLayout HorizontalOptions="Center">
-                <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60" BackgroundColor="#f94620" Padding="10">
-                    <Image Source="xmark.png" HeightRequest="40" WidthRequest="40" />
-                </Frame>
-                <Label Text=" or " Style="{StaticResource SubHeadline}" Margin="0,7,10,10"/>
-                <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60"  BackgroundColor="#66E44C" Padding="10">
-                    <Image Source="check.png" HeightRequest="40" WidthRequest="40" />
-                </Frame>
-            </HorizontalStackLayout>
-            <Label Text=" based on their current working status." Style="{StaticResource SubHeadline}"/>
+
+            <Label 
+                Style="{StaticResource Headline}"
+                Text="Welcome to the Tile Tester"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+
+            <Label 
+                Style="{StaticResource SubHeadline}"
+                Text="The following are connections FLORIAN uses for workspaces tiles."
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+
+            <VerticalStackLayout>
+                <!-- Instructions -->
+                <Label Text="Each connection is given" Style="{StaticResource SubHeadline}" Margin="0,0,10,10"/>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60" BackgroundColor="#f94620" Padding="10">
+                        <Image Source="xmark.png" HeightRequest="40" WidthRequest="40" />
+                    </Frame>
+                    <Label Text=" , " Style="{StaticResource SubHeadline}" Margin="0,7,10,10"/>
+                    <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60"  BackgroundColor="#E9D75F" Padding="10">
+                        <Image Source="exclamation.png" HeightRequest="40" WidthRequest="40" />
+                    </Frame>
+                    <Label Text=" or " Style="{StaticResource SubHeadline}" Margin="0,7,10,10"/>
+                    <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60"  BackgroundColor="#66E44C" Padding="10">
+                        <Image Source="check.png" HeightRequest="40" WidthRequest="40" />
+                    </Frame>
+                </HorizontalStackLayout>
+                <Label Text=" based on their current working status." Style="{StaticResource SubHeadline}"/>
+
+                <!-- Fetch Button -->
+                <Button
+                    x:Name="tileStatusTrigger"
+                    Text="Check Status of Tiles" 
+                    SemanticProperties.Hint="Runs a task to check the connectivity status of the core tiles in FLORIAN's workspace"
+                    Margin="0,5"
+                    Padding="80,10"
+                    Clicked="fetchTileStatus"
+                    FontSize="30"
+                    TextColor="Black"/>
+                
+            </VerticalStackLayout>
+
+            <!-- Statuses -->
+            <controls:StateDisplay 
+                x:Name="testServiceStatusView"  
+                Title="Test Service" 
+                Status="0"/>
+            <controls:StateDisplay 
+                Title="Google Satillite Map" 
+                Status="1"/>
+            <controls:StateDisplay 
+                Title="Google Street View" 
+                Status="0"/>
+            <controls:StateDisplay 
+                Title="Bing Maps" 
+                Feedback="Hellow World" 
+                Status="-1"/>
+            <controls:StateDisplay 
+                Title="Google Satillite Map" />
+            <controls:StateDisplay 
+                Title="Google Satillite Map" />
+            <controls:StateDisplay 
+                Title="Google Satillite Map" />
+
         </VerticalStackLayout>
-
-        <Frame>
-            <controls:StateDisplay Text="Google Satillite Maps"/>
-        </Frame>
-
-    </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>

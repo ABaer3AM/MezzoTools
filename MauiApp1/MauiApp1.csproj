@@ -58,6 +58,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\check.svg" />
+	  <None Remove="Resources\Images\exclamation.svg" />
 	  <None Remove="Resources\Images\xmark.svg" />
 	</ItemGroup>
 
