@@ -25,7 +25,7 @@ public partial class StateDisplay : ContentView
         {
             var control = (StateDisplay)bindable;
 
-            control.feedbackText.Text = ("(" + newValue + ")") as string;
+            control.UpdateFeedback(newValue as string);
 
         });
 
@@ -63,6 +63,12 @@ public partial class StateDisplay : ContentView
         get => (int)GetValue(StatusProperty);
         set => SetValue(StatusProperty, value);
     }
+
+    public void UpdateFull(int status, string feedback)
+    {
+        UpdateStatus(status);
+        UpdateFeedback(feedback);
+    }
     public void UpdateStatus(int status)
     {
         // Update the image source and background color based on the status value
@@ -70,7 +76,8 @@ public partial class StateDisplay : ContentView
         {
             statusImage.Source = "check.png";  // Example: change image to checkmark
             imageFrame.BackgroundColor = Color.FromHex("#66E44C"); // Green
-        }else if(status == -1)
+        }
+        else if(status == -1)
         {
             statusImage.Source = "exclamation.png";  // Example: change image to X mark
             imageFrame.BackgroundColor = Color.FromHex("#E9D75F"); // Yellow
@@ -80,10 +87,12 @@ public partial class StateDisplay : ContentView
             statusImage.Source = "xmark.png";  // Example: change image to X mark
             imageFrame.BackgroundColor = Color.FromHex("#F94620"); // Red
         }
+        Status = status;
     }
 
     public void UpdateFeedback(string feedback)
     {
-        feedbackText.Text = feedback;
+        feedbackText.Text = ("(" + feedback + ")");
+        Feedback = feedback;
     }
 }
