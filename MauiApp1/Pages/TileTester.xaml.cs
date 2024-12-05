@@ -61,7 +61,6 @@ public partial class TileTester : ContentPage
 
 
         // Show visual feedback that the task is stopped
-        Debug.WriteLine("Stopped Task at {DateTime.Now}");
         await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
         //proper exit (1)
         return 1;
@@ -70,7 +69,7 @@ public partial class TileTester : ContentPage
     public void StopBackgroundService()
     {
         _cancellationTokenSource?.Cancel();
-        Debug.WriteLine("Stopped Service");
+        Debug.WriteLine("Stopped Service at {DateTime.Now}");
     }
 
 }
