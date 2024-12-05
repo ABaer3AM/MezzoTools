@@ -38,10 +38,15 @@
                 <Label Text=" based on their current working status." Style="{StaticResource SubHeadline}"/>
 
                 <!-- Fetch Button -->
+                <controls:StateDisplay 
+                    x:Name="serviceRunningStatusView"  
+                    Title="Fetch Service Running Status" 
+                    Status="0"/>
                 <Button
                     x:Name="tileStatusTrigger"
                     Text="Check Status of Tiles" 
                     SemanticProperties.Hint="Runs a task to check the connectivity status of the core tiles in FLORIAN's workspace"
+                    MaximumWidthRequest="600"
                     Margin="0,5"
                     Padding="80,10"
                     Clicked="fetchTileStatus"
@@ -52,12 +57,11 @@
 
             <!-- Statuses -->
             <controls:StateDisplay 
-                x:Name="testServiceStatusView"  
-                Title="Test Service" 
-                Status="0"/>
-            <controls:StateDisplay 
-                Title="Google Satillite Map" 
-                Status="1"/>
+                x:Name="checklistStatusView"
+                Title="Checklist" />
+            
+            <Frame Margin="30"></Frame>
+            <!-- Proof of concept -->
             <controls:StateDisplay 
                 Title="Google Street View" 
                 Status="0"/>
@@ -66,11 +70,7 @@
                 Feedback="Hellow World" 
                 Status="-1"/>
             <controls:StateDisplay 
-                Title="Google Satillite Map" />
-            <controls:StateDisplay 
-                Title="Google Satillite Map" />
-            <controls:StateDisplay 
-                Title="Google Satillite Map" />
+                Title="Google Satillite Map" Status="1"/>
 
         </VerticalStackLayout>
     </ScrollView>

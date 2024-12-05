@@ -7,6 +7,7 @@ public partial class TileTester : ContentPage
 {
     private CancellationTokenSource _cancellationTokenSource;
     public static string[] StringArray = new string[] { "testServiceStatusView"};
+    private static readonly HttpClient httpClient = new HttpClient();
 
     public TileTester()
     {
@@ -30,21 +31,18 @@ public partial class TileTester : ContentPage
     private async Task<int> StartBackgroundService(CancellationToken token)
     {
         // Update visual to show fetch is running
-        await MainThread.InvokeOnMainThreadAsync(() =>
-        {
-            testServiceStatusView.UpdateStatus(1);
-        });
+        Debug.WriteLine($"Started Task running at {DateTime.Now}");
+        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(1); });
+
 
         // Work...
+        Debug.WriteLine("Checklist Fetch Success:/t" + (await FetchChecklistStatus() == 1));
         await Task.Delay(5000);
-        Debug.WriteLine($"Background task running at {DateTime.Now}");
+
 
         // Show visual feedback that the task is stopped
-        Debug.WriteLine("Stopped Service");
-        await MainThread.InvokeOnMainThreadAsync(() =>
-        {
-            testServiceStatusView.UpdateStatus(0);
-        });
+        Debug.WriteLine("Stopped Task at {DateTime.Now}");
+        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
         //proper exit (1)
         return 1;
     }
@@ -54,6 +52,38 @@ public partial class TileTester : ContentPage
         _cancellationTokenSource?.Cancel();
         Debug.WriteLine("Stopped Service");
     }
+
+    //- Get methods for tile statuses --------------------------------------------------
+    private async Task<int> FetchChecklistStatus()
+    {
+        string apiUrl = "https://witeboard.com/";
+        int status = 0;
+        try
+        {
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine($"API is reachable. Status Code: {response.StatusCode}");
+                checklistStatusView.UpdateStatus(1);
+            }
+            else
+            {
+                Debug.WriteLine($"API is not reachable. Status Code: {response.StatusCode}");
+                checklistStatusView.UpdateStatus(0);
+            }
+            return 1;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error checking API connectivity: {ex.Message}");
+            checklistStatusView.UpdateStatus(0);
+            checklistStatusView.UpdateFeedback(ex.Message);
+            return 0;
+        }
+
+    }
+    //----------------------------------------------------------------------------------
 }
 
 /*

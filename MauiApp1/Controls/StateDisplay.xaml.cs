@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace MauiApp1.Controls;
 
 public partial class StateDisplay : ContentView
@@ -32,12 +34,10 @@ public partial class StateDisplay : ContentView
         nameof(Status),
         typeof(int),
         typeof(StateDisplay),
-        defaultValue: 1, // Default to "success" state
+        defaultValue: 0, // Default to "success" state
         propertyChanged: (bindable, oldValue, newValue) =>
         {
             var control = (StateDisplay)bindable;
-            var status = (int)newValue;
-
             // Switch images based on status
             control.UpdateStatus((int)newValue);
         });
@@ -45,7 +45,7 @@ public partial class StateDisplay : ContentView
     public StateDisplay()
 	{
 		InitializeComponent();
-	}
+    }
 
 	public string Title
     {
@@ -80,5 +80,10 @@ public partial class StateDisplay : ContentView
             statusImage.Source = "xmark.png";  // Example: change image to X mark
             imageFrame.BackgroundColor = Color.FromHex("#F94620"); // Red
         }
+    }
+
+    public void UpdateFeedback(string feedback)
+    {
+        feedbackText.Text = feedback;
     }
 }
