@@ -35,7 +35,7 @@ public partial class TileTester : ContentPage
 
         Debug.WriteLine("Fetching Tile Statuses...");
         await StartBackgroundService(_cancellationTokenSource.Token);
-
+        StopBackgroundService();
     }
 
 

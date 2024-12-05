@@ -54,8 +54,8 @@ public partial class StateDisplay : ContentView
 	}
     public string Feedback
     {
-        get => GetValue(TitleProperty) as string;
-        set => SetValue(TitleProperty, value);
+        get => GetValue(FeedbackProperty) as string;
+        set => SetValue(FeedbackProperty, value);
     }
 
     public int Status
