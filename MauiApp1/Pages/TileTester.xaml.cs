@@ -7,12 +7,23 @@ namespace MauiApp1.Pages;
 public partial class TileTester : ContentPage
 {
     private CancellationTokenSource _cancellationTokenSource;
-    public static string[] StringArray = new string[] { "testServiceStatusView"};
+    public static Tuple<string, StateDisplay>[] tiles;
 
 
     public TileTester()
     {
         InitializeComponent();
+
+        tiles = new[]
+        {
+            Tuple.Create("https://witeboard.com/", whiteboardStatusView),
+            Tuple.Create("https://app.watchduty.org/", watchDutyStatusView),
+            Tuple.Create("https://www.arcgis.com/apps/mapviewer/index.html?layers=10df2279f9684e4a9f6a7f08febac2a9", ezriSatStatusView),
+            Tuple.Create("https://www.google.com/maps/", googleSatStatusView),
+            Tuple.Create("https://www.google.com/", googleStatusView),
+            Tuple.Create("https://www.windy.com/-Waves-waves", windyStatusView),
+            Tuple.Create("https://earth.nullschool.net/", macroWeatherStatusView),
+        };
 
         // display navbar
         NavigationPage.SetHasNavigationBar(this, true);
@@ -38,13 +49,15 @@ public partial class TileTester : ContentPage
         await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(1); });
 
 
-        // Work...
-        Tuple<int, string> checklistStatus = await statusCheckerObj.FetchApiStatus("https://witeboard.com/");
-        await MainThread.InvokeOnMainThreadAsync(() => { checklistStatusView.UpdateFull(checklistStatus.Item1, checklistStatus.Item2); });
-        
+        // Through all 
+        foreach (var tile in tiles)
+        {
+            string apiUrl = tile.Item1;
+            StateDisplay stateDisplay = tile.Item2;
 
-
-        await Task.Delay(5000);
+            Tuple<int, string> response = await statusCheckerObj.FetchApiStatus(apiUrl);
+            await MainThread.InvokeOnMainThreadAsync(() => { stateDisplay.UpdateFull(response.Item1, response.Item2); });
+        }
 
 
         // Show visual feedback that the task is stopped

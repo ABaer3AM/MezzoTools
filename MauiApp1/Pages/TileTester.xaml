@@ -6,7 +6,10 @@
              Title="Tile Tester">
     <ScrollView>
         <VerticalStackLayout>
-
+            <controls:StateDisplay 
+                x:Name="serviceRunningStatusView"  
+                Title="Fetch Service Running Status" />
+            
             <Label 
                 Style="{StaticResource Headline}"
                 Text="Welcome to the Tile Tester"
@@ -38,10 +41,6 @@
                 <Label Text=" based on their current working status." Style="{StaticResource SubHeadline}"/>
 
                 <!-- Fetch Button -->
-                <controls:StateDisplay 
-                    x:Name="serviceRunningStatusView"  
-                    Title="Fetch Service Running Status" 
-                    Status="0"/>
                 <Button
                     x:Name="tileStatusTrigger"
                     Text="Check Status of Tiles" 
@@ -52,25 +51,32 @@
                     Clicked="fetchTileStatus"
                     FontSize="30"
                     TextColor="Black"/>
-                
+                <Frame Margin="30"></Frame>
+
             </VerticalStackLayout>
 
             <!-- Statuses -->
             <controls:StateDisplay 
-                x:Name="checklistStatusView"
-                Title="Checklist" />
-            
-            <Frame Margin="30"></Frame>
-            <!-- Proof of concept -->
+                x:Name="whiteboardStatusView"
+                Title="Whiteboard" />
             <controls:StateDisplay 
-                Title="Google Street View" 
-                Status="0"/>
+                x:Name="watchDutyStatusView"
+                Title="Watch Duty" />
             <controls:StateDisplay 
-                Title="Bing Maps" 
-                Feedback="Hellow World" 
-                Status="-1"/>
+                x:Name="ezriSatStatusView"
+                Title="ESRI Satellite Map" />
             <controls:StateDisplay 
-                Title="Google Satillite Map" Status="1"/>
+                x:Name="googleSatStatusView"
+                Title="Google Satellite Map" />
+            <controls:StateDisplay 
+                x:Name="googleStatusView"
+                Title="Google Map" />
+            <controls:StateDisplay 
+                x:Name="windyStatusView"
+                Title="Windy Weather" />
+            <controls:StateDisplay 
+                x:Name="macroWeatherStatusView"
+                Title="Macro Weather (nullschool)" />
 
         </VerticalStackLayout>
     </ScrollView>
