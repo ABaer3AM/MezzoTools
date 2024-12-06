@@ -48,14 +48,19 @@
                     MaximumWidthRequest="600"
                     Margin="0,5"
                     Padding="80,10"
-                    Clicked="fetchTileStatus"
+                    Clicked="fetchUrlsStatus"
                     FontSize="30"
                     TextColor="Black"/>
                 <Frame Margin="30"></Frame>
 
             </VerticalStackLayout>
 
-            <!-- Statuses -->
+            <!-- Tile Statuses -->
+            <Label 
+                Style="{StaticResource SubHeadline}"
+                Text="Workspace Tile URLs"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
             <controls:StateDisplay 
                 x:Name="whiteboardStatusView"
                 Title="Whiteboard" />
@@ -77,6 +82,36 @@
             <controls:StateDisplay 
                 x:Name="macroWeatherStatusView"
                 Title="Macro Weather (nullschool)" />
+            <Frame Margin="30"></Frame>
+
+            <!-- Tile Statuses -->
+            <Label 
+                Style="{StaticResource SubHeadline}"
+                Text="Soft Dependancy URLs"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+            <controls:StateDisplay 
+                x:Name="florianWebPhilaStatusView"
+                Title="Florian Web (Phila)" />
+            <controls:StateDisplay 
+                x:Name="florianWebQaStatusView"
+                Title="Florian Web (Qa)" />
+            <controls:StateDisplay 
+                x:Name="florianWebDemoStatusView"
+                Title="Florian Web (Demo)" />
+            <controls:StateDisplay 
+                x:Name="florianWebProdStatusView"
+                Title="Florian Web" />
+            <controls:StateDisplay 
+                x:Name="bingMapsStatusView"
+                Title="Bing Maps" />
+            <controls:StateDisplay 
+                x:Name="googlePlayStatusView"
+                Title="Google Play Store" />
+            <controls:StateDisplay 
+                x:Name="nextNavStatusView"
+                Title="Next Nav Alternative Altitude" />
+            <Frame Margin="30"></Frame>
 
         </VerticalStackLayout>
     </ScrollView>
