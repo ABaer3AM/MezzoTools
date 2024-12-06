@@ -1,76 +1,97 @@
 using MauiApp1.Controls;
 using System.Diagnostics;
 using System.Threading;
+using MauiApp1.Constants;
 
 namespace MauiApp1.Pages;
 
 public partial class TileTester : ContentPage
 {
-    private CancellationTokenSource _cancellationTokenSource;
-    public static Tuple<string, StateDisplay>[] tiles;
+    private Tuple<string, StateDisplay>[] tiles;
+    private Tuple<string, StateDisplay>[] misc;
+    private static readonly Urls urlsObj = new Urls();
 
 
     public TileTester()
     {
         InitializeComponent();
 
+        Dictionary<string, string> tileUrls = urlsObj.getTiles();
+
         tiles = new[]
         {
-            Tuple.Create("https://witeboard.com/", whiteboardStatusView),
-            Tuple.Create("https://app.watchduty.org/", watchDutyStatusView),
-            Tuple.Create("https://www.arcgis.com/apps/mapviewer/index.html?layers=10df2279f9684e4a9f6a7f08febac2a9", ezriSatStatusView),
-            Tuple.Create("https://www.google.com/maps/", googleSatStatusView),
-            Tuple.Create("https://www.google.com/", googleStatusView),
-            Tuple.Create("https://www.windy.com/-Waves-waves", windyStatusView),
-            Tuple.Create("https://earth.nullschool.net/", macroWeatherStatusView),
+            Tuple.Create(tileUrls["witeboard"], whiteboardStatusView),
+            Tuple.Create(tileUrls["watchDuty"], watchDutyStatusView),
+            Tuple.Create(tileUrls["ezriSatellite"], ezriSatStatusView),
+            Tuple.Create(tileUrls["googleSatellite"], googleSatStatusView),
+            Tuple.Create(tileUrls["google"], googleStatusView),
+            Tuple.Create(tileUrls["windy"], windyStatusView),
+            Tuple.Create(tileUrls["macroWeather"], macroWeatherStatusView),
+        };
+
+        Dictionary<string, string> miscUrls = urlsObj.getMisc();
+        misc = new[]
+        {
+            Tuple.Create(miscUrls["florianWebPhila"], florianWebPhilaStatusView),
+            Tuple.Create(miscUrls["florianWebQa"], florianWebQaStatusView),
+            Tuple.Create(miscUrls["florianWebDemo"], florianWebDemoStatusView),
+            Tuple.Create(miscUrls["florianWebProd"], florianWebProdStatusView),
+            Tuple.Create(miscUrls["bingMaps"], bingMapsStatusView),
+            Tuple.Create(miscUrls["googlePlay"], googlePlayStatusView),
+            Tuple.Create(miscUrls["nextNav"], nextNavStatusView),
         };
 
         // display navbar
         NavigationPage.SetHasNavigationBar(this, true);
     }
 
-    private async void fetchTileStatus(object sender, EventArgs e)
+    private async void fetchUrlsStatus(object sender, EventArgs e)
     {
-        _cancellationTokenSource = new CancellationTokenSource();
+        CancellationTokenSource tileCancellationTokenSource, miscCancellationTokenSource;
+        tileCancellationTokenSource = new CancellationTokenSource();
+        miscCancellationTokenSource = new CancellationTokenSource();
 
         Debug.WriteLine("Fetching Tile Statuses...");
-        await StartBackgroundService(_cancellationTokenSource.Token);
-        StopBackgroundService();
+        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(1); });
+
+
+        await urlStatusService(tileCancellationTokenSource.Token, tiles);
+        StopBackgroundService(tileCancellationTokenSource);
+
+        await urlStatusService(miscCancellationTokenSource.Token, misc);
+        StopBackgroundService(miscCancellationTokenSource);
+
+
+        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
     }
 
 
-
-    private async Task<int> StartBackgroundService(CancellationToken token)
+    private async Task<int> urlStatusService(CancellationToken token, Tuple<string, StateDisplay>[] statusList)
     {
         StatusChecker statusCheckerObj = new StatusChecker();
 
         // Update visual to show fetch is running
         Debug.WriteLine($"Started Task running at {DateTime.Now}");
-        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(1); });
 
 
         // Through all 
-        foreach (var tile in tiles)
+        foreach (var status in statusList)
         {
-            string apiUrl = tile.Item1;
-            StateDisplay stateDisplay = tile.Item2;
+            string apiUrl = status.Item1;
+            StateDisplay stateDisplay = status.Item2;
 
             Tuple<int, string> response = await statusCheckerObj.FetchApiStatus(apiUrl);
             await MainThread.InvokeOnMainThreadAsync(() => { stateDisplay.UpdateFull(response.Item1, response.Item2); });
         }
 
-
-        // Show visual feedback that the task is stopped
-        Debug.WriteLine("Stopped Task at {DateTime.Now}");
-        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
         //proper exit (1)
         return 1;
     }
 
-    public void StopBackgroundService()
+    public void StopBackgroundService(CancellationTokenSource cancelToken)
     {
-        _cancellationTokenSource?.Cancel();
-        Debug.WriteLine("Stopped Service");
+        cancelToken?.Cancel();
+        Debug.WriteLine($"Stopped Task at {DateTime.Now}");
     }
 
 }

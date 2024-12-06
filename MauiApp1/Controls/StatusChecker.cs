@@ -31,7 +31,21 @@ namespace MauiApp1.Controls
                 {
                     Debug.WriteLine($"API is not reachable. Status Code: {response.StatusCode}");
 
-                    return Tuple.Create(0, "Offline");
+                    if(response.ReasonPhrase != null)
+                    {
+                        if (response.ReasonPhrase.Length < 100)
+                        {
+                            return Tuple.Create(0, "Offline, response: " + response.ReasonPhrase);
+                        }
+                        else
+                        {
+                            return Tuple.Create(0, "Offline, response: " + response.ReasonPhrase.Substring(0, 100));
+                        }
+                    }
+                    else
+                    {
+                        return Tuple.Create(0, "Offline, response: NULL");
+                    }
                 }
             }
             catch (Exception ex)
