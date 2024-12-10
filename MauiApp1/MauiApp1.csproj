@@ -78,6 +78,9 @@
 	  <MauiXaml Update="Controls\StateDisplay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\ResourceTester.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\TileTester.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

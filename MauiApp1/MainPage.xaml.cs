@@ -15,6 +15,10 @@ namespace MauiApp1
         {
             await Navigation.PushAsync(new TileTester());
         }
+        private async void redirectToResourceTester(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new ResourceTester());
+        }
     }
 
 }

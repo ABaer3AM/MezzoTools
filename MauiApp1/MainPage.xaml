@@ -36,6 +36,13 @@
                 SemanticProperties.Hint="Redirects User to Tile Tester Page"
                 Clicked="redirectToTileTester"
                 HorizontalOptions="Fill" />
+
+            <Button
+                x:Name="navResourceTester"
+                Text="Go To Resource Tester" 
+                SemanticProperties.Hint="Redirects User to Resource Tester Page"
+                Clicked="redirectToResourceTester"
+                HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
 

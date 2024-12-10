@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
+             x:Class="MauiApp1.Pages.ResourceTester"
+             Title="ResourceTester">
+    <ScrollView>
+        <VerticalStackLayout>
+            <controls:StateDisplay 
+                x:Name="serviceRunningStatusView"  
+                Title="Fetch Service Running Status" />
+
+            <Label 
+                Style="{StaticResource Headline}"
+                Text="Welcome to the Resource Tester"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+
+            <Label 
+                Style="{StaticResource SubHeadline}"
+                Text="The following are hardware resources leveraged by FLORIAN."
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+
+            <VerticalStackLayout>
+                <!-- Instructions -->
+                <Label Text="Each resource is given" Style="{StaticResource SubHeadline}" Margin="0,0,10,10"/>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60" BackgroundColor="#f94620" Padding="10">
+                        <Image Source="xmark.png" HeightRequest="40" WidthRequest="40" />
+                    </Frame>
+                    <Label Text=" , " Style="{StaticResource SubHeadline}" Margin="0,7,10,10"/>
+                    <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60"  BackgroundColor="#E9D75F" Padding="10">
+                        <Image Source="exclamation.png" HeightRequest="40" WidthRequest="40" />
+                    </Frame>
+                    <Label Text=" or " Style="{StaticResource SubHeadline}" Margin="0,7,10,10"/>
+                    <Frame CornerRadius="5" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60"  BackgroundColor="#66E44C" Padding="10">
+                        <Image Source="check.png" HeightRequest="40" WidthRequest="40" />
+                    </Frame>
+                </HorizontalStackLayout>
+                <Label Text=" based on FLORIAN's resource requirements." Style="{StaticResource SubHeadline}"/>
+
+                <!-- Fetch Button -->
+                <Button
+                    x:Name="tileStatusTrigger"
+                    Text="Check Resource Statuses"
+                    SemanticProperties.Hint="Runs a task to check the current status of your devices resources"
+                    MaximumWidthRequest="600"
+                    Margin="0,5"
+                    Padding="80,10"
+                    Clicked="fetchResourceStatus"
+                    FontSize="30"
+                    TextColor="Black"/>
+
+            </VerticalStackLayout>
+
+            <!-- Statuses -->
+            <controls:StateDisplay 
+                x:Name="batteryStatusView"
+                Title="Battery Percantage" />
+            <controls:StateDisplay 
+                x:Name="diskSpaceStatusView"
+                Title="Availible Disk Space" />
+            <controls:StateDisplay 
+                x:Name="ramStatusView"
+                Title="Availible RAM" />
+            <controls:StateDisplay
+                x:Name="osStatusView"
+                Title="Operating System" />
+            <controls:StateDisplay
+                x:Name="internetStatusView"
+                Title="Internet Speed" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

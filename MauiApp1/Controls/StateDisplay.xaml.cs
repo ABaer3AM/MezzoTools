@@ -64,10 +64,11 @@ public partial class StateDisplay : ContentView
         set => SetValue(StatusProperty, value);
     }
 
-    public void UpdateFull(int status, string feedback)
+    public async void UpdateFull(int status, string feedback)
     {
         UpdateStatus(status);
         UpdateFeedback(feedback);
+        await Task.Yield();
     }
     public void UpdateStatus(int status)
     {
