@@ -35,6 +35,7 @@ public partial class ResourceTester : ContentPage
         ResourceChecker resourceCheckerObj = new ResourceChecker();
         // test something
         // Get and display battery percentage
+        await MainThread.InvokeOnMainThreadAsync(() => { batteryStatusView.UpdateStatus(-2); });
         var battery = await resourceCheckerObj.FetchBattery();
         await MainThread.InvokeOnMainThreadAsync(() => {
             batteryStatusView.UpdateFull(
@@ -43,6 +44,7 @@ public partial class ResourceTester : ContentPage
         });
 
         // Get and display free disk space
+        await MainThread.InvokeOnMainThreadAsync(() => { diskSpaceStatusView.UpdateStatus(-2); });
         var diskSpace = await resourceCheckerObj.FetchDiskSpace();
         await MainThread.InvokeOnMainThreadAsync(() => {
             diskSpaceStatusView.UpdateFull(
@@ -51,6 +53,7 @@ public partial class ResourceTester : ContentPage
         });
 
         // Get and display availible RAM
+        await MainThread.InvokeOnMainThreadAsync(() => { ramStatusView.UpdateStatus(-2); });
         var ram = await resourceCheckerObj.FetchRamSpace();
         await MainThread.InvokeOnMainThreadAsync(() => {
             ramStatusView.UpdateFull(
@@ -59,6 +62,7 @@ public partial class ResourceTester : ContentPage
         });
 
         // Get and display OS
+        await MainThread.InvokeOnMainThreadAsync(() => { uploadStatusView.UpdateStatus(-2); });
         var os = await resourceCheckerObj.FetchOs();
         await MainThread.InvokeOnMainThreadAsync(() => {
             osStatusView.UpdateFull(
@@ -67,11 +71,28 @@ public partial class ResourceTester : ContentPage
         });
 
         // Get and display Internet Speed
-        var speed = await resourceCheckerObj.FetchInternetSpeed();
+        await MainThread.InvokeOnMainThreadAsync(() => { uploadStatusView.UpdateStatus(-2); });
+        var upSpeed = await resourceCheckerObj.FetchUploadSpeed();
         await MainThread.InvokeOnMainThreadAsync(() => {
-            internetStatusView.UpdateFull(
-                speed.Item1,
-                speed.Item2);
+            uploadStatusView.UpdateFull(
+                upSpeed.Item1,
+                upSpeed.Item2);
+        });
+        await MainThread.InvokeOnMainThreadAsync(() => { downloadStatusView.UpdateStatus(-2); });
+        var downSpeed = await resourceCheckerObj.FetchDownloadSpeed();
+        await MainThread.InvokeOnMainThreadAsync(() => {
+            downloadStatusView.UpdateFull(
+                downSpeed.Item1,
+                downSpeed.Item2);
+        });
+
+        // Get and display cpu usage
+        await MainThread.InvokeOnMainThreadAsync(() => { cpuStatusView.UpdateStatus(-2); });
+        var cpuUsage = await resourceCheckerObj.FetchCpuUsage();
+        await MainThread.InvokeOnMainThreadAsync(() => {
+            cpuStatusView.UpdateFull(
+                cpuUsage.Item1,
+                cpuUsage.Item2);
         });
 
         Debug.WriteLine($"Stopped Task at {DateTime.Now}");

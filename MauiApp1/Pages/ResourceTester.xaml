@@ -68,8 +68,14 @@
                 x:Name="osStatusView"
                 Title="Operating System" />
             <controls:StateDisplay
-                x:Name="internetStatusView"
-                Title="Internet Speed" />
+                x:Name="uploadStatusView"
+                Title="Upload Speed" />
+            <controls:StateDisplay
+                x:Name="downloadStatusView"
+                Title="Download Speed" />
+            <controls:StateDisplay
+                x:Name="cpuStatusView"
+                Title="CPU Usage" />
 
         </VerticalStackLayout>
     </ScrollView>

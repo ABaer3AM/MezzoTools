@@ -75,13 +75,18 @@ public partial class StateDisplay : ContentView
         // Update the image source and background color based on the status value
         if (status == 1)
         {
-            statusImage.Source = "check.png";  // Example: change image to checkmark
+            statusImage.Source = "check.png";  // Example: change image to a checkmark
             imageFrame.BackgroundColor = Color.FromHex("#66E44C"); // Green
         }
         else if(status == -1)
         {
-            statusImage.Source = "exclamation.png";  // Example: change image to X mark
+            statusImage.Source = "exclamation.png";  // Example: change image to !
             imageFrame.BackgroundColor = Color.FromHex("#E9D75F"); // Yellow
+        }else if(status == -2)
+        {
+            statusImage.Source = "running.png";  // Example: change image to running icon
+            imageFrame.BackgroundColor = Color.FromHex("#83858a"); // Grey
+            UpdateFeedback("Fetching...");
         }
         else
         {
@@ -89,6 +94,11 @@ public partial class StateDisplay : ContentView
             imageFrame.BackgroundColor = Color.FromHex("#F94620"); // Red
         }
         Status = status;
+        /* Statuses
+         *  1 -> Operational and Good Standing
+         *  0 -> Non-operational
+         * -1 -> Operational but not good standing (warning)
+         * -2 -> Currently fetching the status (running)   */
     }
 
     public void UpdateFeedback(string feedback)

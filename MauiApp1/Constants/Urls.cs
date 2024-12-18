@@ -10,21 +10,21 @@ namespace MauiApp1.Constants
     internal class Urls
     {
         private readonly Dictionary<string, string> tiles;
-        private readonly Dictionary<string, string> miscellaneous;
+        private readonly Dictionary<string, string> coreDependency;
 
         public Urls()
         {
             tiles = new Dictionary<string, string> {
                 {"witeboard", "https://witeboard.com/" },
                 {"watchDuty", "https://app.watchduty.org/"},
-                {"ezriSatellite", "https://www.arcgis.com/apps/mapviewer/index.html?layers=10df2279f9684e4a9f6a7f08febac2a9"},
+                {"esriSatellite", "https://www.arcgis.com/apps/mapviewer/index.html?layers=10df2279f9684e4a9f6a7f08febac2a9"},
                 {"googleSatellite", "https://www.google.com/maps/"},
                 {"google", "https://www.google.com/"},
                 {"windy", "https://www.windy.com/-Waves-waves"},
                 {"macroWeather", "https://earth.nullschool.net/"}
             };
 
-            miscellaneous = new Dictionary<string, string> {
+            coreDependency = new Dictionary<string, string> {
                 {"florianWebPhila", "https://phila.florian.app/About" },
                 {"florianWebQa", "https://qa.florian.app/About"},
                 {"florianWebDemo", "https://demo.florian.app/About"},
@@ -38,9 +38,9 @@ namespace MauiApp1.Constants
         {
             return tiles;
         }
-        public Dictionary<string, string> getMisc()
+        public Dictionary<string, string> getCoreDependency()
         {
-            return miscellaneous;
+            return coreDependency;
         }
     }
 }

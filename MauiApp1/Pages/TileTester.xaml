@@ -68,7 +68,7 @@
                 x:Name="watchDutyStatusView"
                 Title="Watch Duty" />
             <controls:StateDisplay 
-                x:Name="ezriSatStatusView"
+                x:Name="esriSatStatusView"
                 Title="ESRI Satellite Map" />
             <controls:StateDisplay 
                 x:Name="googleSatStatusView"
@@ -103,8 +103,8 @@
                 x:Name="florianWebProdStatusView"
                 Title="Florian Web" />
             <controls:StateDisplay 
-                x:Name="bingMapsStatusView"
-                Title="Bing Maps" />
+                x:Name="vEarthStatusView"
+                Title="Virtual Earth .net" />
             <controls:StateDisplay 
                 x:Name="googlePlayStatusView"
                 Title="Google Play Store" />

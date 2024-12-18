@@ -1,12 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.NetworkInformation;
 using Microsoft.Win32;
-using System.Net;
 
 namespace MauiApp1.Controls
 {
@@ -160,7 +155,7 @@ namespace MauiApp1.Controls
             }
             return Tuple.Create(0, "Unknown OS");
         }
-        public async Task<Tuple<int, string>> FetchInternetSpeed()
+        public async Task<Tuple<int, string>> FetchDownloadSpeed()
         {
             var watch = new Stopwatch();
 
@@ -173,8 +168,25 @@ namespace MauiApp1.Controls
                 data = client.DownloadData("https://testfiles.ah-apps.de/100MB.bin");
                 watch.Stop();
             }
-            upSpeed = ((data.LongLength / watch.Elapsed.TotalSeconds) / (1024.0 * 1024))*8; // instead of [Seconds] property
+            upSpeed = ((data.LongLength / watch.Elapsed.TotalSeconds) / (1024.0 * 1024)) * 8; // instead of [Seconds] property
 
+            if (upSpeed > 3)
+            {
+                return Tuple.Create(1, $"{upSpeed:F2} Mbps");
+            }
+            else if (upSpeed > 2)
+            {
+                return Tuple.Create(-1, $"{upSpeed:F2} Mbps");
+            }
+            else
+            {
+                return Tuple.Create(0, $"{upSpeed:F2} Mbps");
+            }
+        }
+
+        public async Task<Tuple<int, string>> FetchUploadSpeed()
+        {
+            var watch = new Stopwatch();
             // Test Upload
             double downSpeed;
             long fileSize = 10 * 1024 * 1024; // 10 MB file size for testing
@@ -195,31 +207,76 @@ namespace MauiApp1.Controls
                     if (!response.IsSuccessStatusCode)
                     {
                         Debug.WriteLine($"Upload failed. Status Code: {response.StatusCode}");
-                        return Tuple.Create(0, $"{upSpeed:F2} up  /  -- dn (Upload failed)");
+                        return Tuple.Create(0, $"Upload failed");
                     }
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Upload failed. Error: {ex.Message}");
-                    return Tuple.Create(0, $"{upSpeed:F2} up  /  -- dn (Upload failed)");
+                    return Tuple.Create(0, $"Upload failed");
                 }
             }
             downSpeed = ((fileSize / watch.Elapsed.TotalSeconds) / (1024.0 * 1024))*8; // Bytes -> Megabytes
 
 
-            if(upSpeed > 3 && downSpeed > 5)
+            if(downSpeed > 5)
             {
-                return Tuple.Create(1, $"{upSpeed:F2} up  /  {downSpeed:F2} (Mbps)");
-            }else if (upSpeed > 2 && downSpeed > 3)
+                return Tuple.Create(1, $"{downSpeed:F2} Mbps");
+            }else if (downSpeed > 3)
             {
-                return Tuple.Create(-1, $"{upSpeed:F2} up  /  {downSpeed:F2} dn (>3/>5 recommended)(Mbps)");
+                return Tuple.Create(-1, $"{downSpeed:F2} Mbps");
             }
             else
             {
-                return Tuple.Create(0, $"{upSpeed:F2} up  /  {downSpeed:F2} dn (>2/>3 required)(Mbps)");
+                return Tuple.Create(0, $"{downSpeed:F2} Mbps");
             }
         }
 
+        public async Task<Tuple<int, string>> FetchCpuUsage()
+        {
+            await Task.Yield();
+            var process = Process.GetCurrentProcess();
+            TimeSpan startCpuUsage = process.TotalProcessorTime;
+            DateTime startTime = DateTime.UtcNow;
+
+            System.Threading.Thread.Sleep(1000); // Wait for 500ms
+
+            TimeSpan endCpuUsage = process.TotalProcessorTime;
+            DateTime endTime = DateTime.UtcNow;
+
+            double cpuUsedMs = (endCpuUsage - startCpuUsage).TotalMilliseconds;
+            double totalMsPassed = (endTime - startTime).TotalMilliseconds;
+            double usagePercentage = cpuUsedMs / (Environment.ProcessorCount * totalMsPassed) *100;
+
+            if(usagePercentage >= 100)
+            {
+                return Tuple.Create(-1, $"{usagePercentage:F1}% usage in {totalMsPassed/1000:F1}s");
+            }
+            else
+            {
+                return Tuple.Create(1, $"{usagePercentage:F1}% usage in {totalMsPassed/1000:F1}s");
+            }
+            
+        }
+
+        public static (long bytesSent, long bytesReceived) GetNetworkUsage()
+        {
+            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
+            long totalBytesSent = 0;
+            long totalBytesReceived = 0;
+
+            foreach (var networkInterface in interfaces)
+            {
+                if (networkInterface.OperationalStatus == OperationalStatus.Up)
+                {
+                    var stats = networkInterface.GetIPv4Statistics();
+                    totalBytesSent += stats.BytesSent;
+                    totalBytesReceived += stats.BytesReceived;
+                }
+            }
+
+            return (totalBytesSent, totalBytesReceived);
+        }
     }
 }
 

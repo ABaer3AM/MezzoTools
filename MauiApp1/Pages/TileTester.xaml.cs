@@ -8,7 +8,7 @@ namespace MauiApp1.Pages;
 public partial class TileTester : ContentPage
 {
     private Tuple<string, StateDisplay>[] tiles;
-    private Tuple<string, StateDisplay>[] misc;
+    private Tuple<string, StateDisplay>[] coreDependencies;
     private static readonly Urls urlsObj = new Urls();
 
 
@@ -22,23 +22,23 @@ public partial class TileTester : ContentPage
         {
             Tuple.Create(tileUrls["witeboard"], whiteboardStatusView),
             Tuple.Create(tileUrls["watchDuty"], watchDutyStatusView),
-            Tuple.Create(tileUrls["ezriSatellite"], ezriSatStatusView),
+            Tuple.Create(tileUrls["esriSatellite"], esriSatStatusView),
             Tuple.Create(tileUrls["googleSatellite"], googleSatStatusView),
             Tuple.Create(tileUrls["google"], googleStatusView),
             Tuple.Create(tileUrls["windy"], windyStatusView),
             Tuple.Create(tileUrls["macroWeather"], macroWeatherStatusView),
         };
 
-        Dictionary<string, string> miscUrls = urlsObj.getMisc();
-        misc = new[]
+        Dictionary<string, string> coreDependencyUrls = urlsObj.getCoreDependency();
+        coreDependencies = new[]
         {
-            Tuple.Create(miscUrls["florianWebPhila"], florianWebPhilaStatusView),
-            Tuple.Create(miscUrls["florianWebQa"], florianWebQaStatusView),
-            Tuple.Create(miscUrls["florianWebDemo"], florianWebDemoStatusView),
-            Tuple.Create(miscUrls["florianWebProd"], florianWebProdStatusView),
-            Tuple.Create(miscUrls["bingMaps"], bingMapsStatusView),
-            Tuple.Create(miscUrls["googlePlay"], googlePlayStatusView),
-            Tuple.Create(miscUrls["nextNav"], nextNavStatusView),
+            Tuple.Create(coreDependencyUrls["florianWebPhila"], florianWebPhilaStatusView),
+            Tuple.Create(coreDependencyUrls["florianWebQa"], florianWebQaStatusView),
+            Tuple.Create(coreDependencyUrls["florianWebDemo"], florianWebDemoStatusView),
+            Tuple.Create(coreDependencyUrls["florianWebProd"], florianWebProdStatusView),
+            Tuple.Create(coreDependencyUrls["bingMaps"], vEarthStatusView),
+            Tuple.Create(coreDependencyUrls["googlePlay"], googlePlayStatusView),
+            Tuple.Create(coreDependencyUrls["nextNav"], nextNavStatusView),
         };
 
         // display navbar
@@ -52,23 +52,23 @@ public partial class TileTester : ContentPage
         miscCancellationTokenSource = new CancellationTokenSource();
 
         Debug.WriteLine("Fetching Tile Statuses...");
-        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(1); });
+        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateFull(1, "Running"); });
 
 
         await urlStatusService(tileCancellationTokenSource.Token, tiles);
         StopBackgroundService(tileCancellationTokenSource);
 
-        await urlStatusService(miscCancellationTokenSource.Token, misc);
+        await urlStatusService(miscCancellationTokenSource.Token, coreDependencies);
         StopBackgroundService(miscCancellationTokenSource);
 
 
-        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
+        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateFull(0, "Stopped"); });
     }
 
 
     private async Task<int> urlStatusService(CancellationToken token, Tuple<string, StateDisplay>[] statusList)
     {
-        StatusChecker statusCheckerObj = new StatusChecker();
+        UrlChecker statusCheckerObj = new UrlChecker();
 
         // Update visual to show fetch is running
         Debug.WriteLine($"Started Task running at {DateTime.Now}");
@@ -80,14 +80,10 @@ public partial class TileTester : ContentPage
             string apiUrl = status.Item1;
             StateDisplay stateDisplay = status.Item2;
 
-            Tuple<int, string> response = await statusCheckerObj.FetchApiStatus(apiUrl);
-            await MainThread.InvokeOnMainThreadAsync(() => { stateDisplay.UpdateFull(response.Item1, response.Item2); });
+            await MainThread.InvokeOnMainThreadAsync(() => { stateDisplay.UpdateStatus(-2); });                             // Set state as Running
+            Tuple<int, string> response = await statusCheckerObj.FetchApiStatus(apiUrl);                                    // Fetch status
+            await MainThread.InvokeOnMainThreadAsync(() => { stateDisplay.UpdateFull(response.Item1, response.Item2); });   // Set status to be fetched state
         }
-
-        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
-        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
-        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
-        await MainThread.InvokeOnMainThreadAsync(() => { serviceRunningStatusView.UpdateStatus(0); });
         //proper exit (1)
         return 1;
     }
